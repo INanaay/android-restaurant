@@ -13,7 +13,13 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
+
+import ca.ulaval.ima.mp.ApiManager;
 import ca.ulaval.ima.mp.MainActivity;
 import ca.ulaval.ima.mp.R;
 
@@ -25,7 +31,9 @@ public class LoginRegisterFragment extends Fragment {
 
     private boolean isLogin = true;
     private View view;
+    private Callback _onLoginCallback;
     public ILoginRegisterListener callback;
+
 
     public void setILoginRegisterListener(ILoginRegisterListener callback) {
         this.callback = callback;
@@ -76,11 +84,23 @@ public class LoginRegisterFragment extends Fragment {
                     showSnackbar("One of the fields is empty");
                 }
                 else {
-                    callback.login(email, password);
+                    ApiManager.getInstance().login(email, password, _onLoginCallback);
                 }
 
             }
         });
+
+        _onLoginCallback = new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                showSnackbar("Probleme de connexion.");
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                Log.i("Response Login", response.body().string());
+            }
+        };
     }
 
     private void showSnackbar(String message) {
