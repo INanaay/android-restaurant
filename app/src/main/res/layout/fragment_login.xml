@@ -13,6 +13,7 @@
         android:id="@+id/imageView"
         android:layout_width="112dp"
         android:layout_height="120dp"
+        android:layout_marginTop="90dp"
         android:background="@drawable/ic_australian_kangaroo_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -27,6 +28,82 @@
         android:text="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/login_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="313dp"
+        android:text="@string/login"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/email_login_textinput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:drawableLeft="@drawable/ic_login_email"
+        android:background="@drawable/input_style"
+        android:paddingRight="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:textSize="13sp"
+        android:drawablePadding="20dp"
+        android:textColor="@color/colorPlaceholder"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_text"
+        android:paddingLeft="20dp" />
+
+  <EditText
+      android:id="@+id/passord_login_textinput"
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/email_login_textinput"
+      android:layout_marginTop="10dp"
+      android:drawableLeft="@drawable/ic_login_password"
+      android:layout_marginRight="20dp"
+      android:gravity="center_vertical"
+      android:paddingStart="20dp"
+      android:textSize="13sp"
+      android:background="@drawable/input_style"
+      android:drawablePadding="20dp"
+      android:layout_marginEnd="20dp"
+      android:layout_marginLeft="20dp"
+      android:layout_marginStart="20dp"
+      android:paddingLeft="20dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="@string/loginButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passord_login_textinput"
+        android:background="@drawable/login_button_style"
+        android:layout_marginStart="20dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
