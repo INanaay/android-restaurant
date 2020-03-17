@@ -1,21 +1,35 @@
 package ca.ulaval.ima.mp.ui.account;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import ca.ulaval.ima.mp.MainActivity;
 import ca.ulaval.ima.mp.R;
 
 public class LoginRegisterFragment extends Fragment {
+
+    public interface ILoginRegisterListener {
+        void login(String email, String password);
+    }
+
     private boolean isLogin = true;
+    private View view;
+    public ILoginRegisterListener callback;
+
+    public void setILoginRegisterListener(ILoginRegisterListener callback) {
+        this.callback = callback;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -23,7 +37,7 @@ public class LoginRegisterFragment extends Fragment {
         MainActivity csActivity      = (MainActivity)getActivity();
         csActivity.getSupportActionBar().hide();
 
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        view = inflater.inflate(R.layout.fragment_login, container, false);
         if (isLogin) {
             setLoginView(view);
         }
@@ -31,16 +45,49 @@ public class LoginRegisterFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ILoginRegisterListener) {
+            this.setILoginRegisterListener((ILoginRegisterListener) context);
+        }
+    }
+
     private void setLoginView(View view) {
         TextView text = view.findViewById(R.id.login_text);
         text.setText(R.string.login);
 
-        EditText emailInput = view.findViewById(R.id.email_login_textinput);
+        final EditText emailInput = view.findViewById(R.id.email_login_textinput);
         emailInput.setHint("Courriel");
 
-        EditText passwordInput = view.findViewById(R.id.passord_login_textinput);
+        final EditText passwordInput = view.findViewById(R.id.passord_login_textinput);
         passwordInput.setHint("Mot de passe");
 
+        Button loginButton = view.findViewById(R.id.login_button);
+        loginButton.setText(R.string.loginButton);
 
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    showSnackbar("One of the fields is empty");
+                }
+                else {
+                    callback.login(email, password);
+                }
+
+            }
+        });
     }
+
+    private void showSnackbar(String message) {
+        Snackbar snackBar = Snackbar.make(view.findViewById(R.id.login_container),
+                message, Snackbar.LENGTH_LONG);
+        snackBar.show();
+    }
+
+
 }

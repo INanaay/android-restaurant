@@ -1,20 +1,25 @@
 package ca.ulaval.ima.mp;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity {
+import ca.ulaval.ima.mp.ui.account.LoginRegisterFragment;
+
+public class MainActivity extends AppCompatActivity implements LoginRegisterFragment.ILoginRegisterListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("Activity", "create");
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -27,4 +32,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+    @Override
+    public void login(String email, String password) {
+        Log.i("LOGIN", email);
+        Log.i("Password", password);
+    }
 }

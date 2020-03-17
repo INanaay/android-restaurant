@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/login_container"
     android:background="@android:color/black"
     android:layout_marginBottom="60dp"
     android:orientation="vertical">
@@ -50,6 +51,7 @@
     <EditText
         android:id="@+id/email_login_textinput"
         android:layout_width="match_parent"
+
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
@@ -81,6 +83,7 @@
       android:layout_marginRight="20dp"
       android:gravity="center_vertical"
       android:paddingStart="20dp"
+      android:inputType="textPassword"
       android:textSize="13sp"
       android:background="@drawable/input_style"
       android:drawablePadding="20dp"
@@ -90,6 +93,7 @@
       android:paddingLeft="20dp" />
 
     <Button
+        android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
@@ -104,6 +108,7 @@
         app:layout_constraintTop_toBottomOf="@id/passord_login_textinput"
         android:background="@drawable/login_button_style"
         android:layout_marginStart="20dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
