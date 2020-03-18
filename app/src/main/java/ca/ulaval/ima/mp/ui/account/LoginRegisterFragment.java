@@ -17,6 +17,10 @@ import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import ca.ulaval.ima.mp.ApiManager;
@@ -98,7 +102,13 @@ public class LoginRegisterFragment extends Fragment {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                Log.i("Response Login", response.body().string());
+                if (response.code() != 200) {
+                    showSnackbar(response.message());
+                }
+                else {
+                    showSnackbar("Connecté.");
+                    getTokenFromResponse(response);
+                }
             }
         };
     }
@@ -107,6 +117,21 @@ public class LoginRegisterFragment extends Fragment {
         Snackbar snackBar = Snackbar.make(view.findViewById(R.id.login_container),
                 message, Snackbar.LENGTH_LONG);
         snackBar.show();
+    }
+
+    private String getTokenFromResponse(Response response) throws IOException {
+        try {
+            JSONObject jsonResponse = new JSONObject(response.body().string());
+            JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
+            String token = jsonContent.getString("access_token");
+
+            ApiManager.getInstance().setToken(token, getContext());
+
+            } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+
     }
 
 
