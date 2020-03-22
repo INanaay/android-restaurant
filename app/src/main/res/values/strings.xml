@@ -4,6 +4,9 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="login">Connexion</string>
+    <string name="register">Inscription</string>
+    <string name="email">Courriel</string>
+    <string name="password">Mot de passe</string>
 
     <string name="loginButton">ME CONNECTER</string>
 

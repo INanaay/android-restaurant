@@ -2,11 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/login_container"
-    android:background="@android:color/black"
     android:layout_marginBottom="60dp"
+    android:background="@android:color/black"
     android:orientation="vertical">
 
 
@@ -27,12 +27,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/app_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textColor="@android:color/white"
         android:textSize="25sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:textColor="@android:color/white"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
@@ -55,63 +55,99 @@
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"
-        android:drawableLeft="@drawable/ic_login_email"
-        android:background="@drawable/input_style"
-        android:paddingRight="20dp"
         android:layout_marginTop="10dp"
-        android:text="inanaay@gmail.com"
-
-        android:gravity="center_vertical"
-        android:paddingStart="20dp"
-        android:textSize="13sp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/input_style"
+        android:drawableLeft="@drawable/ic_login_email"
         android:drawablePadding="20dp"
-        android:textColor="@color/colorPlaceholder"
         android:ems="10"
+        android:gravity="center_vertical"
         android:inputType="textEmailAddress"
+        android:paddingStart="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:hint="@string/email"
+        android:text="inanaay@gmail.com"
+        android:textColor="@color/colorPlaceholder"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_text"
-        android:paddingLeft="20dp" />
+        android:drawableStart="@drawable/ic_login_email" />
 
-  <EditText
-      android:id="@+id/passord_login_textinput"
-      android:layout_width="match_parent"
-      android:layout_height="50dp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/email_login_textinput"
-      android:layout_marginTop="10dp"
-      android:drawableLeft="@drawable/ic_login_password"
-      android:layout_marginRight="20dp"
-      android:gravity="center_vertical"
-      android:paddingStart="20dp"
-      android:inputType="textPassword"
-      android:textSize="13sp"
-      android:text="1234567"
-      android:background="@drawable/input_style"
-      android:drawablePadding="20dp"
-      android:layout_marginEnd="20dp"
-      android:layout_marginLeft="20dp"
-      android:layout_marginStart="20dp"
-      android:paddingLeft="20dp" />
+    <EditText
+        android:id="@+id/passord_login_textinput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/input_style"
+        android:hint="@string/password"
+        android:drawableLeft="@drawable/ic_login_password"
+        android:drawablePadding="20dp"
+        android:gravity="center_vertical"
+        android:inputType="textPassword"
+        android:paddingStart="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="1234567"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_login_textinput"
+        android:drawableStart="@drawable/ic_login_password" />
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:text="@string/loginButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/passord_login_textinput"
+        android:layout_marginRight="20dp"
         android:background="@drawable/login_button_style"
-        android:layout_marginStart="20dp" />
+        android:text="@string/loginButton"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passord_login_textinput" />
 
+    <LinearLayout
+        android:id="@+id/change_login_fragment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@id/login_button">
+
+        <TextView
+            android:id="@+id/change_login_fragment_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nouveau avec Kungry?"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            />
+
+        <TextView
+            android:id="@+id/change_login_fragment_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:text="M’inscrire"
+            android:layout_marginStart="5dp" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

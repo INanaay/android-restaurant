@@ -43,6 +43,27 @@ public class ApiManager extends OkHttpClient{
     private ApiManager() {
     }
 
+
+    public void register(String email, String password, Callback callback) {
+        String content = "{\"email\":\"" + email + "\","
+                + "\"password\":\"" + password + "\","
+                + "\"first_name\":\"" + "Nathan" + "\","
+                + "\"last_name\":\"" + "Lebon" + "\","
+                + "\"client_id\":\"" + _clientId + "\","
+                + "\"client_secret\":\"" + _clientSecret + "\""
+                + "}";
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, content);
+
+        Request request = new Request.Builder()
+                .url(_url + "/account")
+                .post(body)
+                .build();
+
+        newCall(request).enqueue(callback);
+    }
+
     public void login(String email, String password, Callback callback) {
         Log.i("Login", "tryikng");
         String content = "{\"email\":\"" + email + "\","
@@ -56,7 +77,6 @@ public class ApiManager extends OkHttpClient{
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON, content);
 
-        Log.i("url ", _url + "/account");
         Request request = new Request.Builder()
                 .url(_url + "/account/login")
                 .post(body)
