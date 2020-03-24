@@ -9,5 +9,6 @@
     <string name="password">Mot de passe</string>
 
     <string name="loginButton">ME CONNECTER</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

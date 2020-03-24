@@ -156,8 +156,6 @@ public class LoginRegisterFragment extends Fragment {
             }
         });
 
-
-
     }
 
     private void setLoginView() {
@@ -188,8 +186,6 @@ public class LoginRegisterFragment extends Fragment {
                 setRegisterView();
             }
         });
-
-
     }
 
     private void showSnackbar(String message) {
