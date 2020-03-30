@@ -2,6 +2,7 @@ package ca.ulaval.ima.mp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.util.Log;
 
 import com.squareup.okhttp.Callback;
@@ -84,4 +85,24 @@ public class ApiManager extends OkHttpClient{
 
         newCall(request).enqueue(callback);
     }
+
+
+    public void getCloseRestaurants(Location location, Callback callback) {
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/search").newBuilder();
+
+        //urlBuilder.addQueryParameter("latitude", String.valueOf(location.getLatitude()));
+        //urlBuilder.addQueryParameter("longitude", String.valueOf(location.getLongitude()));
+        //urlBuilder.addQueryParameter("radius", "30");
+
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        newCall(request).enqueue(callback);
+    }
+
+
 }
