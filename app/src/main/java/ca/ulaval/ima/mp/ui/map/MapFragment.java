@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.okhttp.Callback;
@@ -45,7 +46,7 @@ import ca.ulaval.ima.mp.Restaurant;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
     private Callback _getRestaurantsCallback;
     private View view;
     private GoogleMap mMap;
@@ -99,6 +100,8 @@ public class MapFragment extends Fragment {
                 ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
 
 
+
+
                 LatLng sydney = new LatLng(_location.getLatitude(), _location.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -109,12 +112,15 @@ public class MapFragment extends Fragment {
     }
 
     private void setLocation() {
+        Log.i("Location", "location");
         if ( Build.VERSION.SDK_INT >= 23){
+            Log.i("Asking permissions", " ----- Asking permissions ------------");
             if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED  ){
                 requestPermissions(new String[]{
                                 android.Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_CODE_ASK_PERMISSIONS);
+                Log.i("WTF", "TF");
                 return ;
             }
         }
@@ -128,7 +134,6 @@ public class MapFragment extends Fragment {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
                 } else {
-                    // Permission Denied
                     Snackbar.make( view,"You need to set your location permissions." , Snackbar.LENGTH_SHORT)
                             .show();
                 }
@@ -198,12 +203,23 @@ public class MapFragment extends Fragment {
                     @Override
                     public void run() {
                         showRestaurant(restaurant.get_location(), restaurant.get_name());
-
+                        _restaurantsList.add(restaurant);
                     }
                 });
 
-                _restaurantsList.add(restaurant);
+
             }
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            return false;
+                        }
+                    });
+                }
+            });
 
 
         } catch (JSONException e) {
@@ -214,6 +230,12 @@ public class MapFragment extends Fragment {
     private void showRestaurant(Location location, String name) {
 
             LatLng marker = new LatLng(location.getLatitude(), location.getLongitude());
+            Log.i("New restaurant", name);
             mMap.addMarker(new MarkerOptions().position(marker).title(name));
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
     }
 }
