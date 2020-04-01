@@ -3,26 +3,31 @@ package ca.ulaval.ima.mp.ui.map;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,13 +51,16 @@ import ca.ulaval.ima.mp.Restaurant;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
+public class MapFragment extends Fragment  {
     private Callback _getRestaurantsCallback;
     private View view;
     private GoogleMap mMap;
     LocationManager _locationManager;
     Location _location;
     ArrayList<Restaurant> _restaurantsList;
+    Marker _lastClicked = null;
+    BitmapDescriptor _defaultMarker;
+    BitmapDescriptor _clickedMarker;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -71,6 +79,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
         view = inflater.inflate(R.layout.fragment_map, container, false);
         _restaurantsList = new ArrayList<>();
+
+        _defaultMarker = bitmapDescriptorFromVector(getActivity(), R.drawable.ic_map_marker);
+        _clickedMarker = bitmapDescriptorFromVector(getActivity(), R.drawable.ic_clicked_map_marker);
 
         _getRestaurantsCallback = new Callback() {
             @Override
@@ -99,9 +110,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
                 ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
 
-
-
-
                 LatLng sydney = new LatLng(_location.getLatitude(), _location.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -112,15 +120,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     private void setLocation() {
-        Log.i("Location", "location");
         if ( Build.VERSION.SDK_INT >= 23){
-            Log.i("Asking permissions", " ----- Asking permissions ------------");
             if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                     PackageManager.PERMISSION_GRANTED  ){
                 requestPermissions(new String[]{
                                 android.Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_CODE_ASK_PERMISSIONS);
-                Log.i("WTF", "TF");
                 return ;
             }
         }
@@ -169,7 +174,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                 .show();
     }
 
-    private void onGetRestaurantSuccess(Response response) throws IOException {
+    private void onGetRestaurantSuccess(final Response response) throws IOException {
         try {
             JSONObject jsonResponse = new JSONObject(response.body().string());
             JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
@@ -202,7 +207,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                 view.post(new Runnable() {
                     @Override
                     public void run() {
-                        showRestaurant(restaurant.get_location(), restaurant.get_name());
+                        showRestaurant(restaurant);
                         _restaurantsList.add(restaurant);
                     }
                 });
@@ -215,6 +220,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
+                            if (_lastClicked != null) {
+                                _lastClicked.setIcon(_defaultMarker);
+                            }
+                            marker.setIcon(_clickedMarker);
+                            _lastClicked = marker;
+                            Restaurant restaurant = (Restaurant) marker.getTag();
+                            Log.i("Name", restaurant.get_name());
                             return false;
                         }
                     });
@@ -227,15 +239,19 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         }
     }
 
-    private void showRestaurant(Location location, String name) {
+    private void showRestaurant(Restaurant restaurant) {
 
-            LatLng marker = new LatLng(location.getLatitude(), location.getLongitude());
-            Log.i("New restaurant", name);
-            mMap.addMarker(new MarkerOptions().position(marker).title(name));
+            LatLng marker = new LatLng(restaurant.get_location().getLatitude(), restaurant.get_location().getLongitude());
+            Marker mapMarker = mMap.addMarker(new MarkerOptions().position(marker).icon(bitmapDescriptorFromVector(getActivity(), R.drawable.ic_map_marker)));
+            mapMarker.setTag(restaurant);
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        return false;
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
