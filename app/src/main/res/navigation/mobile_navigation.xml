@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="ca.ulaval.ima.mp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_resto_list"
+        android:name="ca.ulaval.ima.mp.ui.restorantList.restorantListFragment"
+        android:label="List"
+        tools:layout="@layout/fragment_restorant_list" />
 
     <fragment
         android:id="@+id/navigation_notifications"
