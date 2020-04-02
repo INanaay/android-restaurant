@@ -29,7 +29,12 @@
         android:background="@drawable/map_popup_background"
         android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ViewSwitcher
+            android:id="@+id/mapViewSwitcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mapPopupContainerToReplace"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -56,10 +61,54 @@
                 android:text="Sélectionnez une épingle afin d’obtenir plus de détails sur ce restaurant."
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mapPopupInfos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/mapPopupImage"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="10dp" />
+
+                <TextView
+                    android:id="@+id/mapPopupRestaurantName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="82dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    android:layout_marginLeft="82dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mapPopupRestaurantType"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="82dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="33dp"
+                    android:text="TextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="82dp" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
+        </ViewSwitcher>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </RelativeLayout>

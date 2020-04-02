@@ -14,6 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -35,6 +38,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,9 +65,12 @@ public class MapFragment extends Fragment  {
     Marker _lastClicked = null;
     BitmapDescriptor _defaultMarker;
     BitmapDescriptor _clickedMarker;
+    ViewSwitcher _viewSwitcher;
+    ImageView _restaurantImage;
+    TextView _resturantName;
+    TextView _restaurantType;
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +89,10 @@ public class MapFragment extends Fragment  {
 
         _defaultMarker = bitmapDescriptorFromVector(getActivity(), R.drawable.ic_map_marker);
         _clickedMarker = bitmapDescriptorFromVector(getActivity(), R.drawable.ic_clicked_map_marker);
+        _viewSwitcher = view.findViewById(R.id.mapViewSwitcher);
+        _restaurantImage = view.findViewById(R.id.mapPopupImage);
+        _resturantName = view.findViewById(R.id.mapPopupRestaurantName);
+        _restaurantType = view.findViewById(R.id.mapPopupRestaurantType);
 
         _getRestaurantsCallback = new Callback() {
             @Override
@@ -94,8 +105,6 @@ public class MapFragment extends Fragment  {
                 onGetRestaurantSuccess(response);
             }
         };
-
-
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapFragment);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -110,9 +119,8 @@ public class MapFragment extends Fragment  {
 
                 ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
 
-                LatLng sydney = new LatLng(_location.getLatitude(), _location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                LatLng camera = new LatLng(_location.getLatitude(), _location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(camera));
             }
         });
         return view;
@@ -164,7 +172,6 @@ public class MapFragment extends Fragment  {
             }
         }
         if (bestLocation == null) {
-            Log.i("NULL", "+++++++ NULL +++++");
         }
         _location = bestLocation;
     }
@@ -220,13 +227,22 @@ public class MapFragment extends Fragment  {
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
-                            if (_lastClicked != null) {
+                            if (_lastClicked == null) {
+                                _viewSwitcher.showNext();
+                            }
+                            else if (_lastClicked != null) {
                                 _lastClicked.setIcon(_defaultMarker);
+
                             }
                             marker.setIcon(_clickedMarker);
                             _lastClicked = marker;
                             Restaurant restaurant = (Restaurant) marker.getTag();
                             Log.i("Name", restaurant.get_name());
+
+                            _resturantName.setText(restaurant.get_name());
+                            _restaurantType.setText(restaurant.get_kitchen());
+                            Picasso.get().load(restaurant.get_image()).fit().centerCrop().into(_restaurantImage);
+
                             return false;
                         }
                     });
