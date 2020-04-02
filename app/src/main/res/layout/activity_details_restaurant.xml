@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.restaurantDetails.DetailsRestaurant">
+
+    <ImageView
+        android:id="@+id/resto_detail_star_1"
+        android:layout_width="13dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@+id/resto_detail_distance"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_category"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/resto_detail_star_2"
+        android:layout_width="13dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@+id/resto_detail_star_1"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_category"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/resto_detail_star_3"
+        android:layout_width="13dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@+id/resto_detail_star_2"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_category"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/resto_detail_star_4"
+        android:layout_width="13dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@+id/resto_detail_star_3"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_category"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/resto_detail_star_5"
+        android:layout_width="13dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@+id/resto_detail_star_4"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_category"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <ImageView
+        android:id="@+id/resto_detail_image"
+        android:layout_width="wrap_content"
+        android:layout_height="235dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/resto_detail_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="16dp"
+        android:hint="L'affaire est au ketchup"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_image" />
+
+    <TextView
+        android:id="@+id/resto_detail_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:hint="French"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_name" />
+
+    <TextView
+        android:id="@+id/resto_detail_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="6dp"
+        android:hint="5 km"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_category" />
+
+    <TextView
+        android:id="@+id/resto_detail_review_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="6dp"
+        android:hint="(253)"
+        app:layout_constraintStart_toEndOf="@+id/resto_detail_star_5"
+        app:layout_constraintTop_toBottomOf="@+id/resto_detail_category" />
+</androidx.constraintlayout.widget.ConstraintLayout>
