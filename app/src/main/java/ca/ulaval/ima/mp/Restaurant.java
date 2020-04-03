@@ -75,4 +75,12 @@ public class Restaurant {
     public String get_id() {
         return _id;
     }
+
+    public String get_latitude() {
+        return String.valueOf(_location.getLatitude());
+    }
+
+    public String get_longitutde() {
+        return String.valueOf(_location.getLongitude());
+    }
 }

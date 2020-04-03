@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements LoginRegisterFrag
     }
 
     @Override
-    public void navigateToRestaurantDetails(String id) {
+    public void navigateToRestaurantDetails(String id, String latitude, String longitutde) {
         Log.i("Test", "test");
     }
 

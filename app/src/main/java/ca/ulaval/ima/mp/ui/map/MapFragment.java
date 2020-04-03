@@ -18,9 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -70,6 +70,7 @@ public class MapFragment extends Fragment  {
     ImageView _restaurantImage;
     TextView _resturantName;
     TextView _restaurantType;
+    ConstraintLayout _popupInfos;
 
     public IRestaurantHandler _handler;
 
@@ -109,6 +110,16 @@ public class MapFragment extends Fragment  {
         _restaurantImage = view.findViewById(R.id.mapPopupImage);
         _resturantName = view.findViewById(R.id.mapPopupRestaurantName);
         _restaurantType = view.findViewById(R.id.mapPopupRestaurantType);
+        _popupInfos = view.findViewById(R.id.mapPopupInfos);
+
+        _popupInfos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Restaurant clickedRestaurant = (Restaurant) _lastClicked.getTag();
+                _handler.navigateToRestaurantDetails(clickedRestaurant.get_id(),
+                        clickedRestaurant.get_latitude(), clickedRestaurant.get_longitutde());
+            }
+        });
 
         _getRestaurantsCallback = new Callback() {
             @Override
@@ -233,8 +244,6 @@ public class MapFragment extends Fragment  {
                             _resturantName.setText(restaurant.get_name());
                             _restaurantType.setText(restaurant.get_kitchen());
                             Picasso.get().load(restaurant.get_image()).fit().centerCrop().into(_restaurantImage);
-                            _handler.navigateToRestaurantDetails("salut");
-
                             return false;
                         }
                     });
