@@ -1,10 +1,12 @@
 package ca.ulaval.ima.mp;
 
 import android.content.pm.ActivityInfo;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.okhttp.Response;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -12,9 +14,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import ca.ulaval.ima.mp.ui.account.LoginRegisterFragment;
 
-public class MainActivity extends AppCompatActivity implements LoginRegisterFragment.ILoginRegisterListener {
+public class MainActivity extends AppCompatActivity implements LoginRegisterFragment.ILoginRegisterListener, IRestaurantHandler {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +46,50 @@ public class MainActivity extends AppCompatActivity implements LoginRegisterFrag
     public void login(String email, String password) {
         Log.i("LOGIN", email);
         Log.i("Password", password);
+    }
+
+    @Override
+    public void navigateToRestaurantDetails(String id) {
+        Log.i("Test", "test");
+    }
+
+    @Override
+    public ArrayList<Restaurant> parseRestaurantJson(Response response) throws JSONException {
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
+        try {
+            JSONObject jsonResponse = new JSONObject(response.body().string());
+            JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
+            JSONArray array = jsonContent.getJSONArray("results");
+
+            for (int i = 0; i < array.length(); i++) {
+                Log.i("JSON", array.getString(i));
+                JSONObject jsonObject = new JSONObject(array.getString(i));
+                final String id = jsonObject.getString("id");
+                final String name = jsonObject.getString("name");
+
+                JSONArray kitchenArray = jsonObject.getJSONArray("cuisine");
+                JSONObject kitchenJson = new JSONObject(kitchenArray.getString(0));
+                final String kitchenId = kitchenJson.getString("id");
+                final String kitchen = kitchenJson.getString("name");
+                final String reviewCount = jsonObject.getString("review_count");
+                final String reviewAverage = jsonObject.getString("review_average");
+                final String image = jsonObject.getString("image");
+                JSONObject locationJson = new JSONObject(jsonObject.getString("location"));
+                final String latitude = locationJson.getString("latitude");
+                final String longitutde = locationJson.getString("longitude");
+
+                Location location = new Location("me");
+                location.setLatitude(Double.parseDouble(latitude));
+                location.setLongitude(Double.parseDouble(longitutde));
+
+                final Restaurant restaurant = new Restaurant(id, name, location, reviewCount,
+                        reviewAverage, image, kitchenId, kitchen);
+
+                restaurants.add(restaurant);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return restaurants;
     }
 }

@@ -86,7 +86,7 @@ public class ApiManager extends OkHttpClient{
         newCall(request).enqueue(callback);
     }
 
-    public void getCloseRestaurants(Callback callback) {
+    public void getCloseRestaurants(Location _location, Callback callback) {
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant").newBuilder();
 
