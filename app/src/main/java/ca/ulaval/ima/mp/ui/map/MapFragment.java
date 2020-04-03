@@ -117,7 +117,7 @@ public class MapFragment extends Fragment  {
                     return;
                 }
 
-                ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
+                ApiManager.getInstance().getCloseRestaurants(_getRestaurantsCallback);
 
                 LatLng camera = new LatLng(_location.getLatitude(), _location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(camera));

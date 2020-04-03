@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
 
+import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
@@ -81,6 +82,17 @@ public class ApiManager extends OkHttpClient{
         Request request = new Request.Builder()
                 .url(_url + "/account/login")
                 .post(body)
+                .build();
+
+        newCall(request).enqueue(callback);
+    }
+
+    public void getRestaurantDetails(int restaurantId, Callback callback) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/" + restaurantId).newBuilder();
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
                 .build();
 
         newCall(request).enqueue(callback);
