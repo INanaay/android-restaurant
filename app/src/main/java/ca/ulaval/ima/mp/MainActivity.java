@@ -1,5 +1,6 @@
 package ca.ulaval.ima.mp;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import ca.ulaval.ima.mp.ui.account.LoginRegisterFragment;
+import ca.ulaval.ima.mp.ui.restaurantDetails.DetailsRestaurant;
 
 public class MainActivity extends AppCompatActivity implements LoginRegisterFragment.ILoginRegisterListener, IRestaurantHandler {
 
@@ -50,7 +52,12 @@ public class MainActivity extends AppCompatActivity implements LoginRegisterFrag
 
     @Override
     public void navigateToRestaurantDetails(String id, String latitude, String longitutde) {
-        Log.i("Test", "test");
+        Intent intent= new Intent(this, DetailsRestaurant.class);
+        intent.putExtra("id", id);
+        intent.putExtra("latitude", latitude);
+        intent.putExtra("longitude", longitutde);
+
+        startActivity(intent);
     }
 
     @Override
