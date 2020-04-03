@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import ca.ulaval.ima.mp.MainActivity;
 import ca.ulaval.ima.mp.R;
 import ca.ulaval.ima.mp.ui.restaurantDetails.DetailsRestaurant;
 
@@ -31,11 +32,14 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     private JSONArray restoArray;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context mContext;
+
 
     // data is passed into the constructor
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     RestaurantListAdapter(Context context, String response) {
         this.mInflater = LayoutInflater.from(context);
+        this.mContext = context;
         try {
             JSONObject jsonResponse = new JSONObject(response);
             JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
@@ -107,15 +111,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                Log.d("saloperie", String.valueOf(getAdapterPosition()));
-                Intent intent= new Intent(mInflater.getContext(), DetailsRestaurant.class);
-                try {
-                    intent.putExtra("restoData", restoArray.getJSONObject(getAdapterPosition()).toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mInflater.getContext().startActivity(intent);
-                //mClickListener.onItemClick(view, getAdapterPosition());
+                ((MainActivity)mContext).navigateToRestaurantDetails("1", "0", "0");
             }
         }
     }
