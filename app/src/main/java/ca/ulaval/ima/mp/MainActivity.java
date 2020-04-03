@@ -51,11 +51,11 @@ public class MainActivity extends AppCompatActivity implements LoginRegisterFrag
     }
 
     @Override
-    public void navigateToRestaurantDetails(String id, String latitude, String longitutde) {
+    public void navigateToRestaurantDetails(String id, String latitude, String longitude) {
         Intent intent= new Intent(this, DetailsRestaurant.class);
         intent.putExtra("id", id);
         intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitutde);
+        intent.putExtra("longitude", longitude);
 
         startActivity(intent);
     }
