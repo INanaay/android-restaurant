@@ -1,8 +1,10 @@
 package ca.ulaval.ima.mp;
 
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Restaurant {
+public class Restaurant implements Parcelable {
     private String _id;
     private String _name;
     private Location _location;
@@ -23,6 +25,29 @@ public class Restaurant {
         this._kitchenId = kitchenId;
         this._kitchen = kitchen;
     }
+
+    protected Restaurant(Parcel in) {
+        _id = in.readString();
+        _name = in.readString();
+        _location = in.readParcelable(Location.class.getClassLoader());
+        _review_count = in.readString();
+        _review_average = in.readString();
+        _image = in.readString();
+        _kitchenId = in.readString();
+        _kitchen = in.readString();
+    }
+
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
 
     public String get_name() {
         return _name;
@@ -74,5 +99,22 @@ public class Restaurant {
 
     public String get_id() {
         return _id;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(_name);
+        dest.writeParcelable(_location, flags);
+        dest.writeString(_review_count);
+        dest.writeString(_review_average);
+        dest.writeString(_image);
+        dest.writeString(_kitchenId);
+        dest.writeString(_kitchen);
     }
 }
