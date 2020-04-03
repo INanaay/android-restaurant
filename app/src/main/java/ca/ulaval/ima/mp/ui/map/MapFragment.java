@@ -18,9 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.ulaval.ima.mp.ApiManager;
+import ca.ulaval.ima.mp.IRestaurantHandler;
 import ca.ulaval.ima.mp.MainActivity;
 import ca.ulaval.ima.mp.R;
 import ca.ulaval.ima.mp.Restaurant;
@@ -69,6 +70,13 @@ public class MapFragment extends Fragment  {
     ImageView _restaurantImage;
     TextView _resturantName;
     TextView _restaurantType;
+    ConstraintLayout _popupInfos;
+
+    public IRestaurantHandler _handler;
+
+    public void setIRestaurantHandler(IRestaurantHandler handler) {
+        this._handler = handler;
+    }
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -78,6 +86,15 @@ public class MapFragment extends Fragment  {
         _locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
 
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IRestaurantHandler) {
+            this.setIRestaurantHandler((IRestaurantHandler) context);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,6 +110,16 @@ public class MapFragment extends Fragment  {
         _restaurantImage = view.findViewById(R.id.mapPopupImage);
         _resturantName = view.findViewById(R.id.mapPopupRestaurantName);
         _restaurantType = view.findViewById(R.id.mapPopupRestaurantType);
+        _popupInfos = view.findViewById(R.id.mapPopupInfos);
+
+        _popupInfos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Restaurant clickedRestaurant = (Restaurant) _lastClicked.getTag();
+                _handler.navigateToRestaurantDetails(clickedRestaurant.get_id(),
+                        clickedRestaurant.get_latitude(), clickedRestaurant.get_longitutde());
+            }
+        });
 
         _getRestaurantsCallback = new Callback() {
             @Override
@@ -102,7 +129,11 @@ public class MapFragment extends Fragment  {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                onGetRestaurantSuccess(response);
+                try {
+                    onGetRestaurantSuccess(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         };
 
@@ -116,15 +147,13 @@ public class MapFragment extends Fragment  {
                     showSnackbar("Couldn't find your location.");
                     return;
                 }
-
-                ApiManager.getInstance().getCloseRestaurants(_getRestaurantsCallback);
+                ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
 
                 LatLng camera = new LatLng(_location.getLatitude(), _location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(camera));
             }
         });
         return view;
-
     }
 
     private void setLocation() {
@@ -181,46 +210,19 @@ public class MapFragment extends Fragment  {
                 .show();
     }
 
-    private void onGetRestaurantSuccess(final Response response) throws IOException {
-        try {
-            JSONObject jsonResponse = new JSONObject(response.body().string());
-            JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
-            JSONArray array = jsonContent.getJSONArray("results");
+    private void onGetRestaurantSuccess(final Response response) throws IOException, JSONException {
+        _restaurantsList = _handler.parseRestaurantJson(response);
 
-            for (int i = 0; i < array.length(); i++) {
-                Log.i("JSON", array.getString(i));
-                JSONObject jsonObject = new JSONObject(array.getString(i));
-                final String id = jsonObject.getString("id");
-                final String name = jsonObject.getString("name");
+        for (int index = 0; index < _restaurantsList.size(); index++) {
+            final int finalIndex = index;
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    showRestaurant(_restaurantsList.get(finalIndex));
+                }
+            });
 
-                JSONArray kitchenArray = jsonObject.getJSONArray("cuisine");
-                JSONObject kitchenJson = new JSONObject(kitchenArray.getString(0));
-                final String kitchenId = kitchenJson.getString("id");
-                final String kitchen = kitchenJson.getString("name");
-                final String reviewCount = jsonObject.getString("review_count");
-                final String reviewAverage = jsonObject.getString("review_average");
-                final String image =  jsonObject.getString("image");
-                JSONObject locationJson = new JSONObject(jsonObject.getString("location"));
-                final String latitude = locationJson.getString("latitude");
-                final String longitutde = locationJson.getString("longitude");
-
-                Location location = new Location("me");
-                location.setLatitude(Double.parseDouble(latitude));
-                location.setLongitude(Double.parseDouble(longitutde));
-
-                final Restaurant restaurant = new Restaurant(id, name, location, reviewCount,
-                        reviewAverage, image, kitchenId, kitchen);
-
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        showRestaurant(restaurant);
-                        _restaurantsList.add(restaurant);
-                    }
-                });
-
-
-            }
+        }
             view.post(new Runnable() {
                 @Override
                 public void run() {
@@ -242,17 +244,11 @@ public class MapFragment extends Fragment  {
                             _resturantName.setText(restaurant.get_name());
                             _restaurantType.setText(restaurant.get_kitchen());
                             Picasso.get().load(restaurant.get_image()).fit().centerCrop().into(_restaurantImage);
-
                             return false;
                         }
                     });
                 }
             });
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     private void showRestaurant(Restaurant restaurant) {

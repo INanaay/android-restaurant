@@ -1,5 +1,6 @@
 package ca.ulaval.ima.mp.ui.restorantList;
 
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -106,7 +107,8 @@ public class restorantListFragment extends Fragment {
             }
         };
 
-        ApiManager.getInstance().getCloseRestaurants(_restaurantListCallback);
+        Location location = new Location("me");
+        ApiManager.getInstance().getCloseRestaurants(location,_restaurantListCallback);
         return view;
     }
 
