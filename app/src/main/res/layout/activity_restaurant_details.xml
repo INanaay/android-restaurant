@@ -436,7 +436,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginTop="18dp"
                             android:gravity="center_vertical"
-                          />
+                            app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
                         <TextView
                             android:id="@+id/geolocation"
