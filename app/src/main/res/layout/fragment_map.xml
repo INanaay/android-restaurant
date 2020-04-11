@@ -35,35 +35,6 @@
             android:layout_height="match_parent" >
 
             <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/mapPopupContainerToReplace"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:text="Un petit creux?"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginLeft="14dp"
-                android:textColor="@android:color/black"
-                android:textSize="12sp"
-                android:text="Sélectionnez une épingle afin d’obtenir plus de détails sur ce restaurant."
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/mapPopupInfos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -103,8 +74,72 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_marginStart="82dp" />
 
+                <RatingBar
+                    android:id="@+id/popupRating"
+                    android:layout_width="77dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="56dp"
+                    android:layout_marginLeft="82dp"
+                    android:rating="2"
+                    android:numStars="5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="82dp" />
 
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="11dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="280dp"
+                    android:layout_marginLeft="280dp"
+                    android:layout_marginTop="57dp"
+                    android:src="@drawable/ic_map_marker"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mapDistancePopupText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="14dp"
+                    android:layout_marginTop="56dp"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="296dp"
+                    android:layout_marginLeft="296dp"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mapPopupContainerToReplace"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="14dp"
+                android:text="Un petit creux?"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginLeft="14dp"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:text="Sélectionnez une épingle afin d’obtenir plus de détails sur ce restaurant."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 

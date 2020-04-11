@@ -98,13 +98,13 @@ public class ApiManager extends OkHttpClient{
         newCall(request).enqueue(callback);
     }
 
-    public void getCloseRestaurants(Location _location, Callback callback) {
+    public void getCloseRestaurants(Location location, Callback callback) {
 
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/search").newBuilder();
 
-        //urlBuilder.addQueryParameter("latitude", String.valueOf(location.getLatitude()));
-        //urlBuilder.addQueryParameter("longitude", String.valueOf(location.getLongitude()));
-        //urlBuilder.addQueryParameter("radius", "30");
+        urlBuilder.addQueryParameter("latitude", String.valueOf(location.getLatitude()));
+        urlBuilder.addQueryParameter("longitude", String.valueOf(location.getLongitude()));
+        urlBuilder.addQueryParameter("radius", "30");
 
         String url = urlBuilder.build().toString();
 

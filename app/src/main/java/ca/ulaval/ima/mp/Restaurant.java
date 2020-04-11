@@ -11,9 +11,10 @@ public class Restaurant {
     private String _image;
     private String _kitchenId;
     private String _kitchen;
+    private String _distance;
 
     public Restaurant(String id, String name, Location location, String review_count, String review_average,
-                      String image, String kitchenId, String kitchen) {
+                      String image, String kitchenId, String kitchen, String distance) {
         this._id = id;
         this._name = name;
         this._location = location;
@@ -22,6 +23,7 @@ public class Restaurant {
         this._image = image;
         this._kitchenId = kitchenId;
         this._kitchen = kitchen;
+        this._distance = distance;
     }
 
     public String get_name() {
@@ -82,5 +84,9 @@ public class Restaurant {
 
     public String get_longitutde() {
         return String.valueOf(_location.getLongitude());
+    }
+
+    public String get_distance() {
+        return _distance;
     }
 }

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -60,17 +61,19 @@ public class MapFragment extends Fragment  {
     private Callback _getRestaurantsCallback;
     private View view;
     private GoogleMap mMap;
-    LocationManager _locationManager;
-    Location _location;
-    ArrayList<Restaurant> _restaurantsList;
-    Marker _lastClicked = null;
-    BitmapDescriptor _defaultMarker;
-    BitmapDescriptor _clickedMarker;
-    ViewSwitcher _viewSwitcher;
-    ImageView _restaurantImage;
-    TextView _resturantName;
-    TextView _restaurantType;
-    ConstraintLayout _popupInfos;
+    private LocationManager _locationManager;
+    private Location _location;
+    private ArrayList<Restaurant> _restaurantsList;
+    private Marker _lastClicked = null;
+    private BitmapDescriptor _defaultMarker;
+    private BitmapDescriptor _clickedMarker;
+    private ViewSwitcher _viewSwitcher;
+    private ImageView _restaurantImage;
+    private TextView _resturantName;
+    private TextView _restaurantType;
+    private ConstraintLayout _popupInfos;
+    private TextView _distance;
+    private RatingBar _rating;
 
     public IRestaurantHandler _handler;
 
@@ -111,6 +114,8 @@ public class MapFragment extends Fragment  {
         _resturantName = view.findViewById(R.id.mapPopupRestaurantName);
         _restaurantType = view.findViewById(R.id.mapPopupRestaurantType);
         _popupInfos = view.findViewById(R.id.mapPopupInfos);
+        _distance = view.findViewById(R.id.mapDistancePopupText);
+        _rating = view.findViewById(R.id.popupRating);
 
         _popupInfos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,10 +152,15 @@ public class MapFragment extends Fragment  {
                     showSnackbar("Couldn't find your location.");
                     return;
                 }
-                ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
+                Location testLocation = new Location("me");
+                testLocation.setLatitude(46.8124426);
+                testLocation.setLongitude(-71.2327026);
+                // a remplacer par _location
+                ApiManager.getInstance().getCloseRestaurants(testLocation, _getRestaurantsCallback);
 
-                LatLng camera = new LatLng(_location.getLatitude(), _location.getLongitude());
+                LatLng camera = new LatLng(testLocation.getLatitude(), testLocation.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(camera));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo( 10.0f ));
             }
         });
         return view;
@@ -196,7 +206,6 @@ public class MapFragment extends Fragment  {
                 continue;
             }
             if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
-                // Found best last known location: %s", l);
                 bestLocation = l;
             }
         }
@@ -244,6 +253,10 @@ public class MapFragment extends Fragment  {
                             _resturantName.setText(restaurant.get_name());
                             _restaurantType.setText(restaurant.get_kitchen());
                             Picasso.get().load(restaurant.get_image()).fit().centerCrop().into(_restaurantImage);
+                            String distanceToShow = restaurant.get_distance() + " km";
+                            _distance.setText(distanceToShow);
+                            double rating = Double.parseDouble(restaurant.get_review_average());
+                            _rating.setNumStars((int) rating);
                             return false;
                         }
                     });
