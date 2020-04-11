@@ -74,6 +74,7 @@ public class MapFragment extends Fragment  {
     private ConstraintLayout _popupInfos;
     private TextView _distance;
     private RatingBar _rating;
+    private TextView _review_count;
 
     public IRestaurantHandler _handler;
 
@@ -116,6 +117,8 @@ public class MapFragment extends Fragment  {
         _popupInfos = view.findViewById(R.id.mapPopupInfos);
         _distance = view.findViewById(R.id.mapDistancePopupText);
         _rating = view.findViewById(R.id.popupRating);
+        _review_count = view.findViewById(R.id.popupReviewCount);
+
 
         _popupInfos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,15 +155,10 @@ public class MapFragment extends Fragment  {
                     showSnackbar("Couldn't find your location.");
                     return;
                 }
-                Location testLocation = new Location("me");
-                testLocation.setLatitude(46.8124426);
-                testLocation.setLongitude(-71.2327026);
-                // a remplacer par _location
-                ApiManager.getInstance().getCloseRestaurants(testLocation, _getRestaurantsCallback);
+                ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
 
-                LatLng camera = new LatLng(testLocation.getLatitude(), testLocation.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(camera));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo( 10.0f ));
+                LatLng camera = new LatLng(_location.getLatitude(), _location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(camera, 15.0f));
             }
         });
         return view;
@@ -173,7 +171,6 @@ public class MapFragment extends Fragment  {
                 requestPermissions(new String[]{
                                 android.Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_CODE_ASK_PERMISSIONS);
-                return ;
             }
         }
         getLocation();
@@ -206,6 +203,7 @@ public class MapFragment extends Fragment  {
                 continue;
             }
             if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
                 bestLocation = l;
             }
         }
@@ -255,8 +253,12 @@ public class MapFragment extends Fragment  {
                             Picasso.get().load(restaurant.get_image()).fit().centerCrop().into(_restaurantImage);
                             String distanceToShow = restaurant.get_distance() + " km";
                             _distance.setText(distanceToShow);
-                            double rating = Double.parseDouble(restaurant.get_review_average());
-                            _rating.setNumStars((int) rating);
+                            float rating = Float.parseFloat(restaurant.get_review_average());
+                            _rating.setNumStars(5);
+                            _rating.setRating(rating);
+
+                            String reviewCount = "(" + restaurant.get_review_count() + ")";
+                            _review_count.setText(reviewCount);
                             return false;
                         }
                     });
