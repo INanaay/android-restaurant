@@ -98,6 +98,16 @@ public class ApiManager extends OkHttpClient{
         newCall(request).enqueue(callback);
     }
 
+    public void getRestaurantReview(String restaurantId, Callback callback) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant" + restaurantId + "/reviews").newBuilder();
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        newCall(request).enqueue(callback);
+    }
+
     public void getCloseRestaurants(Location _location, Callback callback) {
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant").newBuilder();
