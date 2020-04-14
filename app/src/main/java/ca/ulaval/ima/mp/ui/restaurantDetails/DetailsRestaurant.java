@@ -35,6 +35,7 @@ public class DetailsRestaurant extends AppCompatActivity {
     TextView restoNumberReview = findViewById(R.id.textcount);
     ImageView restoImage = findViewById(R.id.img);*/
     String resto;
+    JSONObject jsonContent;
     private Callback _restaurantDetailsCallback;
 
     private void initView(JSONObject data) {
@@ -53,7 +54,7 @@ public class DetailsRestaurant extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_restaurant);
+        setContentView(R.layout.activity_restaurant_details);
         Intent intent = getIntent();
         restaurantId = intent.getStringExtra("id");
         restoName = findViewById(R.id.txt_title);
@@ -74,11 +75,10 @@ public class DetailsRestaurant extends AppCompatActivity {
                     try {
                         resto = response.body().string();
                         JSONObject jsonResponse = new JSONObject(resto);
-                        Log.d("response de la vie", jsonResponse.toString());
-                        JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
+                        jsonContent = new JSONObject(jsonResponse.getString("content"));
                         initView(jsonContent);
                     } catch (Exception e) {
-                        Log.d("Error qui fais chier ", e.toString());
+                        e.printStackTrace();
                     }
                 }
             }
