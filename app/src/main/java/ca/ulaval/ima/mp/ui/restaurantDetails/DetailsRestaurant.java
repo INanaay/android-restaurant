@@ -29,23 +29,22 @@ import ca.ulaval.ima.mp.R;
 import ca.ulaval.ima.mp.ui.restorantList.RestaurantListAdapter;
 
 public class DetailsRestaurant extends AppCompatActivity {
-    private int restaurantId;
-    TextView restoName;
-    TextView restoCategory;
-    TextView restoNumberReview;
-    ImageView restoImage;
-    JSONObject resto;
+    private String restaurantId;
+    private TextView restoName;
+    /*TextView restoCategory = findViewById(R.id.txt_type);
+    TextView restoNumberReview = findViewById(R.id.textcount);
+    ImageView restoImage = findViewById(R.id.img);*/
+    String resto;
     private Callback _restaurantDetailsCallback;
 
-    private void initView() {
+    private void initView(JSONObject data) {
         try {
-            Picasso.get().load(resto.getString("image")).into(restoImage);
-            restoName.setText(resto.getString("name"));
-            JSONArray cuisine = resto.getJSONArray("cuisine");
+            //Picasso.get().load(resto.getString("image")).into(restoImage);
+            restoName.setText(data.getString("name"));
+            /* JSONArray cuisine = resto.getJSONArray("cuisine");
             JSONObject type = cuisine.getJSONObject(0);
             restoCategory.setText(type.getString("name"));
-            restoNumberReview.setText("( ".concat(resto.getString("review_count")).concat(" )"));
-            restaurantId = Integer.parseInt(resto.getString("id"));
+            restoNumberReview.setText("( ".concat(resto.getString("review_count")).concat(" )"));*/
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -56,20 +55,10 @@ public class DetailsRestaurant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_restaurant);
         Intent intent = getIntent();
-        String extra = intent.getStringExtra("id");
+        restaurantId = intent.getStringExtra("id");
+        restoName = findViewById(R.id.txt_title);
         String latitude = intent.getStringExtra("latitude");
         String longitude = intent.getStringExtra("longitude");
-        Log.d("zednzeiof", extra + "   " + latitude);
-        /* try {
-            resto = new JSONObject(extra);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        restoImage = findViewById(R.id.resto_detail_image);
-        restoName = findViewById(R.id.resto_detail_name);
-        restoCategory = findViewById(R.id.resto_detail_category);
-        restoNumberReview = findViewById(R.id.resto_detail_review_number);
-        initView();
         _restaurantDetailsCallback = new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
@@ -82,20 +71,22 @@ public class DetailsRestaurant extends AppCompatActivity {
                     Log.d("debug resto list", response.message());
                 }
                 else {
-                    Log.d("salut la compagnie", response.body().string());
+                    try {
+                        resto = response.body().string();
+                        JSONObject jsonResponse = new JSONObject(resto);
+                        Log.d("response de la vie", jsonResponse.toString());
+                        JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
+                        initView(jsonContent);
+                    } catch (Exception e) {
+                        Log.d("Error qui fais chier ", e.toString());
+                    }
                 }
             }
         };
-        ApiManager.getInstance().getRestaurantDetails(restaurantId, _restaurantDetailsCallback);
         try {
-            Picasso.get().load(resto.getString("image")).into(restoImage);
-            restoName.setText(resto.getString("name"));
-            JSONArray cuisine = resto.getJSONArray("cuisine");
-            JSONObject type = cuisine.getJSONObject(0);
-            restoCategory.setText(type.getString("name"));
-            restoNumberReview.setText("( ".concat(resto.getString("review_count")).concat(" )"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+            ApiManager.getInstance().getRestaurantDetails(Integer.parseInt(restaurantId), _restaurantDetailsCallback);
+        } catch (Exception e) {
+            Log.d("Error", "Can't mke the Api call");
+        }
     }
 }
