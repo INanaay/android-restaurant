@@ -38,23 +38,28 @@ public class DetailsRestaurant extends AppCompatActivity {
     JSONObject jsonContent;
     private Callback _restaurantDetailsCallback;
 
-    private void initView(JSONObject data) {
-        try {
+    private void initView(final JSONObject data) {
             //Picasso.get().load(resto.getString("image")).into(restoImage);
-            restoName.setText(data.getString("name"));
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        restoName.setText(data.getString("name"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
             /* JSONArray cuisine = resto.getJSONArray("cuisine");
             JSONObject type = cuisine.getJSONObject(0);
             restoCategory.setText(type.getString("name"));
             restoNumberReview.setText("( ".concat(resto.getString("review_count")).concat(" )"));*/
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_details);
+        setContentView(R.layout.activity_details_restaurant);
         Intent intent = getIntent();
         restaurantId = intent.getStringExtra("id");
         restoName = findViewById(R.id.txt_title);
