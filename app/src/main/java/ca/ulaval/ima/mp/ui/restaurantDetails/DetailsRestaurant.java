@@ -29,47 +29,75 @@ import ca.ulaval.ima.mp.R;
 import ca.ulaval.ima.mp.ui.restorantList.RestaurantListAdapter;
 
 public class DetailsRestaurant extends AppCompatActivity {
-    private int restaurantId;
-    TextView restoName;
-    TextView restoCategory;
-    TextView restoNumberReview;
-    ImageView restoImage;
-    JSONObject resto;
+    private TextView restoName;
+    private TextView restoNumberReview;
+    private TextView restoType;
+    private TextView restoTelNumber;
+    private TextView restoDistance;
+    private TextView restoLink;
+    private TextView mon;
+    private TextView tue;
+    private TextView wed;
+    private TextView thur;
+    private TextView fri;
+    private TextView sat;
+    private TextView sun;
+    private ImageView restoImg;
     private Callback _restaurantDetailsCallback;
 
-    private void initView() {
-        try {
-            Picasso.get().load(resto.getString("image")).into(restoImage);
-            restoName.setText(resto.getString("name"));
-            JSONArray cuisine = resto.getJSONArray("cuisine");
-            JSONObject type = cuisine.getJSONObject(0);
-            restoCategory.setText(type.getString("name"));
-            restoNumberReview.setText("( ".concat(resto.getString("review_count")).concat(" )"));
-            restaurantId = Integer.parseInt(resto.getString("id"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    private void initView(final JSONObject data) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Picasso.get().load(data.getString("image")).into(restoImg);
+                        restoName.setText(data.getString("name"));
+                        JSONArray cuisine = data.getJSONArray("cuisine");
+                        JSONObject type = cuisine.getJSONObject(0);
+                        restoType.setText(type.getString("name"));
+                        restoNumberReview.setText("( ".concat(data.getString("review_count")).concat(" )"));
+                        JSONArray openingHours = data.getJSONArray("opening_hours");
+                        sun.setText(openingHours.getJSONObject(0).getString("opening_hour") + " à " + openingHours.getJSONObject(0).getString("closing_hour"));
+                        mon.setText(openingHours.getJSONObject(1).getString("opening_hour") + " à " + openingHours.getJSONObject(1).getString("closing_hour"));
+                        tue.setText(openingHours.getJSONObject(2).getString("opening_hour") + " à " + openingHours.getJSONObject(2).getString("closing_hour"));
+                        wed.setText(openingHours.getJSONObject(3).getString("opening_hour") + " à " + openingHours.getJSONObject(3).getString("closing_hour"));
+                        thur.setText(openingHours.getJSONObject(4).getString("opening_hour") + " à " + openingHours.getJSONObject(4).getString("closing_hour"));
+                        fri.setText(openingHours.getJSONObject(5).getString("opening_hour") + " à " + openingHours.getJSONObject(5).getString("closing_hour"));
+                        sat.setText(openingHours.getJSONObject(6).getString("opening_hour") + " à " + openingHours.getJSONObject(6).getString("closing_hour"));
+                        restoLink.setText(data.getString("website"));
+                        restoDistance.setText(data.getString("distance"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_restaurant);
+        this.getSupportActionBar().hide();
         Intent intent = getIntent();
-        String extra = intent.getStringExtra("id");
+        String restaurantId = intent.getStringExtra("id");
         String latitude = intent.getStringExtra("latitude");
         String longitude = intent.getStringExtra("longitude");
-        Log.d("zednzeiof", extra + "   " + latitude);
-        /* try {
-            resto = new JSONObject(extra);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        restoImage = findViewById(R.id.resto_detail_image);
-        restoName = findViewById(R.id.resto_detail_name);
-        restoCategory = findViewById(R.id.resto_detail_category);
-        restoNumberReview = findViewById(R.id.resto_detail_review_number);
-        initView();
+
+        restoName = findViewById(R.id.txt_title);
+        restoType = findViewById(R.id.txt_type);
+        restoNumberReview = findViewById(R.id.textcount);
+        restoTelNumber = findViewById(R.id.textcall);
+        restoImg = findViewById(R.id.img);
+        restoLink = findViewById(R.id.textlink);
+        restoDistance = findViewById(R.id.textdistance);
+        mon = findViewById(R.id.t11);
+        tue = findViewById(R.id.t22);
+        wed = findViewById(R.id.t33);
+        thur = findViewById(R.id.t44);
+        fri = findViewById(R.id.t55);
+        sat = findViewById(R.id.t66);
+        sun = findViewById(R.id.t77);
+
         _restaurantDetailsCallback = new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
@@ -82,20 +110,20 @@ public class DetailsRestaurant extends AppCompatActivity {
                     Log.d("debug resto list", response.message());
                 }
                 else {
-                    Log.d("salut la compagnie", response.body().string());
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response.body().string());
+                        JSONObject jsonContent = new JSONObject(jsonResponse.getString("content"));
+                        initView(jsonContent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         };
-        ApiManager.getInstance().getRestaurantDetails(restaurantId, _restaurantDetailsCallback);
         try {
-            Picasso.get().load(resto.getString("image")).into(restoImage);
-            restoName.setText(resto.getString("name"));
-            JSONArray cuisine = resto.getJSONArray("cuisine");
-            JSONObject type = cuisine.getJSONObject(0);
-            restoCategory.setText(type.getString("name"));
-            restoNumberReview.setText("( ".concat(resto.getString("review_count")).concat(" )"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+            ApiManager.getInstance().getRestaurantDetails(Integer.parseInt(restaurantId), _restaurantDetailsCallback);
+        } catch (Exception e) {
+            Log.d("Error", "Can't mke the Api call");
+        }
     }
 }
