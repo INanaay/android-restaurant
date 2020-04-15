@@ -23,13 +23,18 @@ import ca.ulaval.ima.mp.R;
 import ca.ulaval.ima.mp.Review;
 
 public class ReviewActivity extends AppCompatActivity {
+
+    ReviewAdapter reviewAdapter;
+    ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.review_activity);
-        final ListView listView = findViewById(R.id.rv_list);
+        setContentView(R.layout.review_list);
+        listView = (ListView) findViewById(R.id.rv_list2);
+        reviewAdapter = new ReviewAdapter(getApplicationContext(), R.layout.adapter_view_layout);
+        listView.setAdapter(reviewAdapter);
         final String RestaurantID = getIntent().getStringExtra("id");
-        final TextView nb_review = findViewById(R.id.nb_eval);
 
         ApiManager.getInstance().getRestaurantReview(RestaurantID, new Callback() {
             @Override
@@ -46,31 +51,24 @@ public class ReviewActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(my_response);
                         final JSONObject content = new JSONObject(jsonObject.getString("content"));
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    nb_review.setText(content.getString("count"));
-                                }
-                                catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                        JSONArray jsonArray = jsonObject.getJSONArray("content");
+                        JSONArray jsonArray = content.getJSONArray("results");
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject object = jsonArray.getJSONObject(i);
-                            JSONArray jsonArrayResults = object.getJSONArray("results");
-                            for (int j = 0; j < jsonArrayResults.length(); j++) {
-                                JSONObject results = jsonArrayResults.getJSONObject(j);
-                                final String first_name = results.getJSONObject("creator").getString("first_name");
-                                final String last_name = results.getJSONObject("creator").getString("last_name");
-                                Review review = new Review(first_name, last_name, results.getString("stars"), results.getString("image"), results.getString("comment"), results.getString("date"));
-                                ArrayList<Review> reviewArrayList = new ArrayList<>();
-                                reviewArrayList.add(review);
-                                ReviewListAdapter adapter = new ReviewListAdapter(getApplicationContext(), R.layout.adapter_view_layout, reviewArrayList);
-                                listView.setAdapter(adapter);
-                            }
+                            final JSONObject object = jsonArray.getJSONObject(i);
+                            System.out.println(object.toString());
+                            final String first_name = object.getJSONObject("creator").getString("first_name");
+                            final String last_name = object.getJSONObject("creator").getString("last_name");
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Review review = new Review(first_name, last_name, object.getString("stars"), object.getString("image"), object.getString("comment"), object.getString("date"));
+                                        reviewAdapter.add(review);
+                                    }
+                                    catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
