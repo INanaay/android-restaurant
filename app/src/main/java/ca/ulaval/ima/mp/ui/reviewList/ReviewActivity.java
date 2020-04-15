@@ -54,7 +54,6 @@ public class ReviewActivity extends AppCompatActivity {
                         JSONArray jsonArray = content.getJSONArray("results");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             final JSONObject object = jsonArray.getJSONObject(i);
-                            System.out.println(object.toString());
                             final String first_name = object.getJSONObject("creator").getString("first_name");
                             final String last_name = object.getJSONObject("creator").getString("last_name");
                             runOnUiThread(new Runnable() {
