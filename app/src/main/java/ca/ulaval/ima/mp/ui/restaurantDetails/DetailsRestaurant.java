@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import java.io.IOException;
 import ca.ulaval.ima.mp.ApiManager;
 import ca.ulaval.ima.mp.R;
 import ca.ulaval.ima.mp.ui.restorantList.RestaurantListAdapter;
+import ca.ulaval.ima.mp.ui.reviewList.ReviewActivity;
 
 public class DetailsRestaurant extends AppCompatActivity {
     private int restaurantId;
@@ -60,6 +62,15 @@ public class DetailsRestaurant extends AppCompatActivity {
         String latitude = intent.getStringExtra("latitude");
         String longitude = intent.getStringExtra("longitude");
         Log.d("zednzeiof", extra + "   " + latitude);
+        Button button = findViewById(R.id.rv_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent review = new Intent(getApplicationContext(), ReviewActivity.class);
+                review.putExtra("id", "1");
+                startActivity(review);
+            }
+        });
         /* try {
             resto = new JSONObject(extra);
         } catch (JSONException e) {

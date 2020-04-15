@@ -99,7 +99,7 @@ public class ApiManager extends OkHttpClient{
     }
 
     public void getRestaurantReview(String restaurantId, Callback callback) {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant" + restaurantId + "/reviews").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/" + restaurantId + "/reviews/").newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
