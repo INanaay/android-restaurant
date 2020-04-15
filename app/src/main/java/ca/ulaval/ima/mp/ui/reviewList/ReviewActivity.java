@@ -30,11 +30,12 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.review_list);
+        setContentView(R.layout.review_activity);
         listView = (ListView) findViewById(R.id.rv_list2);
         reviewAdapter = new ReviewAdapter(getApplicationContext(), R.layout.adapter_view_layout);
         listView.setAdapter(reviewAdapter);
         final String RestaurantID = getIntent().getStringExtra("id");
+        final TextView rv_nbreview = findViewById(R.id.nb_eval);
 
         ApiManager.getInstance().getRestaurantReview(RestaurantID, new Callback() {
             @Override
@@ -51,6 +52,7 @@ public class ReviewActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(my_response);
                         final JSONObject content = new JSONObject(jsonObject.getString("content"));
+                        final String nb_review = content.getString("count");
                         JSONArray jsonArray = content.getJSONArray("results");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             final JSONObject object = jsonArray.getJSONObject(i);
@@ -60,6 +62,7 @@ public class ReviewActivity extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     try {
+                                        rv_nbreview.setText(nb_review);
                                         Review review = new Review(first_name, last_name, object.getString("stars"), object.getString("image"), object.getString("comment"), object.getString("date"));
                                         reviewAdapter.add(review);
                                     }
