@@ -2,6 +2,8 @@ package ca.ulaval.ima.mp.ui.reviewList;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +32,18 @@ public class ReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.review_activity);
+        getSupportActionBar().hide();
+        ImageView imageView = (ImageView) findViewById(R.id.back_btn);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         listView = (ListView) findViewById(R.id.rv_list2);
         reviewAdapter = new ReviewAdapter(getApplicationContext(), R.layout.adapter_view_layout);
         listView.setAdapter(reviewAdapter);
@@ -78,5 +91,11 @@ public class ReviewActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 }

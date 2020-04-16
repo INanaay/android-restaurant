@@ -65,6 +65,7 @@ public class ReviewAdapter extends ArrayAdapter {
         }
         else {
             reviewHolder = (ReviewHolder) row.getTag();
+
         }
 
         Review review = (Review) this.getItem(position);
