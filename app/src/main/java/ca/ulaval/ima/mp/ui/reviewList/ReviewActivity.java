@@ -1,8 +1,10 @@
 package ca.ulaval.ima.mp.ui.reviewList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ public class ReviewActivity extends AppCompatActivity {
         listView.setAdapter(reviewAdapter);
         final String RestaurantID = getIntent().getStringExtra("id");
         final TextView rv_nbreview = findViewById(R.id.nb_eval);
+        Button button = findViewById(R.id.rv_bottom_btn);
 
         ApiManager.getInstance().getRestaurantReview(RestaurantID, new Callback() {
             @Override
@@ -76,7 +79,7 @@ public class ReviewActivity extends AppCompatActivity {
                                 public void run() {
                                     try {
                                         rv_nbreview.setText(nb_review);
-                                        Review review = new Review(first_name, last_name, object.getString("stars"), object.getString("image"), object.getString("comment"), object.getString("date"));
+                                        Review review = new Review(first_name, last_name, object.getInt("stars"), object.getString("image"), object.getString("comment"), object.getString("date"));
                                         reviewAdapter.add(review);
                                     }
                                     catch (JSONException e) {
@@ -91,6 +94,16 @@ public class ReviewActivity extends AppCompatActivity {
                 }
             }
         });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FormReviewActivity.class);
+                intent.putExtra("id", RestaurantID);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

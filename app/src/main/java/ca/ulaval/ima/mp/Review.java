@@ -3,12 +3,12 @@ package ca.ulaval.ima.mp;
 public class Review {
     private String first_name;
     private String last_name;
-    private String nb_stars;
+    private int nb_stars;
     private String img;
     private String comment;
     private String date;
 
-    public Review(String first_name, String last_name, String nb_stars, String img, String comment, String date) {
+    public Review(String first_name, String last_name, int nb_stars, String img, String comment, String date) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.nb_stars = nb_stars;
@@ -33,11 +33,11 @@ public class Review {
         this.last_name = last_name;
     }
 
-    public String getNb_stars() {
+    public int getNb_stars() {
         return nb_stars;
     }
 
-    public void setNb_stars(String nb_stars) {
+    public void setNb_stars(int nb_stars) {
         this.nb_stars = nb_stars;
     }
 

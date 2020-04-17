@@ -108,6 +108,18 @@ public class ApiManager extends OkHttpClient{
         newCall(request).enqueue(callback);
     }
 
+    public void postReviewWithoutPicture(String content, Callback callback) {
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        RequestBody body = RequestBody.create(JSON, content);
+        final Request request = new Request.Builder()
+                .url(_url + "/review/")
+                .post(body)
+                .addHeader("Authorization", getToken())
+                .build();
+
+        newCall(request).enqueue(callback);
+    }
+
     public void getCloseRestaurants(Location _location, Callback callback) {
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant").newBuilder();

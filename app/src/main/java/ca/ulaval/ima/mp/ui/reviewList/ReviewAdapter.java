@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,7 @@ import ca.ulaval.ima.mp.Review;
 public class ReviewAdapter extends ArrayAdapter {
 
     List list = new ArrayList();
+    boolean isImageFitToScreen;
 
     public ReviewAdapter(Context context, int resource) {
         super(context, resource);
@@ -49,7 +52,7 @@ public class ReviewAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View row;
-        ReviewHolder reviewHolder;
+        final ReviewHolder reviewHolder;
         row = convertView;
         if (row == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -58,29 +61,28 @@ public class ReviewAdapter extends ArrayAdapter {
             reviewHolder.rv_firstname = (TextView) row.findViewById(R.id.rv_firstname);
             reviewHolder.rv_lastname = (TextView) row.findViewById(R.id.rv_lastname);
             reviewHolder.rv_comment = (TextView) row.findViewById(R.id.rv_comment);
-            reviewHolder.rv_stars = (TextView) row.findViewById(R.id.rv_stars);
+            reviewHolder.rv_stars = (RatingBar) row.findViewById(R.id.MyRatingCard);
             reviewHolder.rv_date = (TextView) row.findViewById(R.id.rv_date);
             reviewHolder.rv_img = (ImageView) row.findViewById(R.id.rv_img);
             row.setTag(reviewHolder);
         }
         else {
             reviewHolder = (ReviewHolder) row.getTag();
-
         }
-
         Review review = (Review) this.getItem(position);
         assert review != null;
         reviewHolder.rv_firstname.setText(review.getFirst_name());
         reviewHolder.rv_lastname.setText(review.getLast_name());
         reviewHolder.rv_comment.setText(review.getComment());
-        reviewHolder.rv_stars.setText(review.getNb_stars());
+        reviewHolder.rv_stars.setRating(review.getNb_stars());
         reviewHolder.rv_date.setText(review.getDate());
         Picasso.get().load(review.getImg()).into(reviewHolder.rv_img);
         return row;
     }
 
     static class ReviewHolder {
-        TextView rv_firstname, rv_lastname, rv_stars, rv_date, rv_comment;
+        TextView rv_firstname, rv_lastname, rv_date, rv_comment;
+        RatingBar rv_stars;
         ImageView rv_img;
     }
 
