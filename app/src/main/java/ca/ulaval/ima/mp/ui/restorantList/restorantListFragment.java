@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import com.squareup.okhttp.Callback;
 
 import ca.ulaval.ima.mp.ApiManager;
+import ca.ulaval.ima.mp.MainActivity;
 import ca.ulaval.ima.mp.R;
 
 public class restorantListFragment extends Fragment {
@@ -64,6 +65,8 @@ public class restorantListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainActivity activity = (MainActivity)getActivity();
+        activity.getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         view = inflater.inflate(R.layout.fragment_restorant_list, container, false);
         recyclerView = view.findViewById(R.id.recyclerView_resto_list);

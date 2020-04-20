@@ -99,7 +99,7 @@ public class MapFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         MainActivity activity = (MainActivity)getActivity();
-        activity.getSupportActionBar().show();
+        activity.getSupportActionBar().hide();
 
         view = inflater.inflate(R.layout.fragment_map, container, false);
         _restaurantsList = new ArrayList<>();

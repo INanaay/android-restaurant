@@ -106,9 +106,6 @@ public class FormReviewActivity extends AppCompatActivity {
     };
 
     private void filePicker() {
-        //Intent intent = new Intent(Intent.ACTION_PICK);
-        //intent.setType("image/*");
-        //startActivityForResult(intent, RESULT_LOAD_IMAGE);
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, RESULT_LOAD_IMAGE);
     }

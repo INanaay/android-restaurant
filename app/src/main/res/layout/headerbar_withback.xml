@@ -6,7 +6,10 @@
 
     <include layout="@layout/headerbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:shadowColor="#2114140F"
+        android:shadowDy="4"
+        android:shadowDx="0"/>
 
     <ImageView
         android:id="@+id/back_btn"
