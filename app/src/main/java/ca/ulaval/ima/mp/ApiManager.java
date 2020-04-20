@@ -3,15 +3,21 @@ package ca.ulaval.ima.mp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
 import android.util.Log;
 
-import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
+
+import java.io.File;
+import java.io.IOException;
+
+import okhttp3.MultipartBody;
+import okhttp3.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -22,6 +28,7 @@ public class ApiManager extends OkHttpClient{
     private String _clientSecret = "YOVWGpjSnHd5AYDxGBR2CIB09ZYM1OPJGnH3ijkKwrUMVvwLprUmLf6fxku06ClUKTAEl5AeZN36V9QYBYvTtrLMrtUtXVuXOGWleQGYyApC2a469l36TdlXFqAG1tpK";
     private SharedPreferences _pref;
     private SharedPreferences.Editor _editor;
+
 
     private static final ApiManager ourInstance = new ApiManager();
 
@@ -114,10 +121,42 @@ public class ApiManager extends OkHttpClient{
         final Request request = new Request.Builder()
                 .url(_url + "/review/")
                 .post(body)
-                .addHeader("Authorization", getToken())
+                .addHeader("Authorization", "Bearer " + getToken())
                 .build();
 
         newCall(request).enqueue(callback);
+    }
+
+    public void postReviewWithPicture(String id,  String path, okhttp3.Callback callback) {
+        File file = new File(path);
+        okhttp3.RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("image", file.getName(), okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/*"), file))
+                .build();
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(_url + "/review/" + id +  "/image/")
+                .post(requestBody)
+                .header("Authorization", "Bearer " + getToken())
+                .build();
+
+        okhttp3.OkHttpClient client = new okhttp3.OkHttpClient();
+        client.newCall(request).enqueue(callback);
+    }
+
+
+    public void getProfilInfo(Callback callback) {
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "account/me").newBuilder();
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", getToken())
+                .build();
+        newCall(request).enqueue(callback);
+    }
+
+    public void RemoveToken() {
+        _editor.putString("token", null);
     }
 
     public void getCloseRestaurants(Location _location, Callback callback) {

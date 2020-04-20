@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.reviewList.ProfilFragment">
+
+    <include layout="@layout/headerbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/header_bar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_moncompte"
+        android:paddingTop="27dp"
+        android:text="Mon compte"
+        android:textStyle="bold"
+        android:textColor="#211414"
+        android:textSize="20dp"
+        android:layout_below="@+id/header_bar"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_nom"
+        android:paddingTop="27dp"
+        android:text="Nom"
+        android:textColor="#211414"
+        android:textSize="18dp"
+        android:layout_below="@+id/cp_moncompte"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_firstname"
+        android:text="Eliott"
+        android:layout_below="@id/cp_nom"
+        android:paddingTop="5dp"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_lastname"
+        android:text="Legal"
+        android:layout_alignBottom="@id/cp_firstname"
+        android:paddingTop="5dp"
+        android:paddingLeft="58dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_courriel"
+        android:paddingTop="47dp"
+        android:text="Courriel"
+        android:textColor="#211414"
+        android:textSize="18dp"
+        android:layout_below="@+id/cp_nom"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_email"
+        android:text="eliott.legal.1@ulaval.ca"
+        android:layout_below="@id/cp_courriel"
+        android:paddingTop="5dp"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_review"
+        android:paddingTop="47dp"
+        android:text="Nombre d’évaluations attribuées"
+        android:textColor="#211414"
+        android:textSize="18dp"
+        android:layout_below="@+id/cp_courriel"
+        android:paddingLeft="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cp_nbreview"
+        android:text="2"
+        android:layout_below="@id/cp_review"
+        android:paddingTop="5dp"
+        android:paddingLeft="20dp" />
+
+    <Button
+        android:id="@+id/cp_bottom_btn"
+        android:layout_width="335dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/cp_nbreview"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="196dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/submitreviewbutton"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="DÉCONNEXION"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>
