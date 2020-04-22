@@ -7,9 +7,16 @@
     android:layout_marginBottom="60dp"
     >
 
+    <include layout="@layout/headerbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"/>
+
+
     <fragment
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/mapFragment"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </fragment>

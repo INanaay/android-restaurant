@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import java.io.IOException;
 import ca.ulaval.ima.mp.ApiManager;
 import ca.ulaval.ima.mp.R;
 import ca.ulaval.ima.mp.ui.restorantList.RestaurantListAdapter;
+import ca.ulaval.ima.mp.ui.reviewList.ReviewActivity;
 
 public class DetailsRestaurant extends AppCompatActivity {
     private TextView restoName;
