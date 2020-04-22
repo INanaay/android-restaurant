@@ -106,7 +106,7 @@ public class ApiManager extends OkHttpClient{
     }
 
     public void getRestaurantReview(String restaurantId, Callback callback) {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/" + restaurantId + "/reviews/").newBuilder
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/" + restaurantId + "/reviews/").newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
@@ -145,12 +145,12 @@ public class ApiManager extends OkHttpClient{
 
 
     public void getProfilInfo(Callback callback) {
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "account/me").newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/account/me").newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
                 .url(url)
-                .addHeader("Authorization", getToken())
+                .addHeader("Authorization", "Bearer " + getToken())
                 .build();
         newCall(request).enqueue(callback);
     }
@@ -163,8 +163,8 @@ public class ApiManager extends OkHttpClient{
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/search").newBuilder();
 
-        urlBuilder.addQueryParameter("latitude", String.valueOf(location.getLatitude()));
-        urlBuilder.addQueryParameter("longitude", String.valueOf(location.getLongitude()));
+        urlBuilder.addQueryParameter("latitude", String.valueOf(_location.getLatitude()));
+        urlBuilder.addQueryParameter("longitude", String.valueOf(_location.getLongitude()));
         urlBuilder.addQueryParameter("radius", "30");
 
         String url = urlBuilder.build().toString();
