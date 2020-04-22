@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements LoginRegisterFrag
                 final String reviewCount = jsonObject.getString("review_count");
                 final String reviewAverage = jsonObject.getString("review_average");
                 final String image = jsonObject.getString("image");
+                final String distance = jsonObject.getString("distance");
                 JSONObject locationJson = new JSONObject(jsonObject.getString("location"));
                 final String latitude = locationJson.getString("latitude");
                 final String longitutde = locationJson.getString("longitude");
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements LoginRegisterFrag
                 location.setLongitude(Double.parseDouble(longitutde));
 
                 final Restaurant restaurant = new Restaurant(id, name, location, reviewCount,
-                        reviewAverage, image, kitchenId, kitchen);
+                        reviewAverage, image, kitchenId, kitchen, distance);
 
                 restaurants.add(restaurant);
             }

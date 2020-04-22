@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.fragmentpackage.RestaurantDescription">
+    tools:context=".ui.restaurantDetails.DetailsRestaurant">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -396,63 +396,6 @@
                     android:layout_marginTop="15dp"
                     android:layout_below="@id/reldays"/>
 
-                <RelativeLayout
-                    android:id="@+id/relMap"
-                    android:layout_width="402dp"
-                    android:layout_height="277dp"
-                    android:layout_below="@id/txtlieu"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="21dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="1dp"
-                    android:background="@android:drawable/dialog_holo_light_frame">
-
-                    <RelativeLayout
-                        android:id="@+id/relfragMap"
-                        android:layout_width="405dp"
-                        android:layout_height="204dp">
-
-                        <androidx.fragment.app.FragmentContainerView
-                            android:id="@+id/fragment2"
-                            android:name="ca.ulaval.ima.mp.ui.fragmentpackage.MapFragmentClone"
-                            android:layout_width="match_parent"
-                            android:layout_height="196dp" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/txtgeolocation"
-                        android:layout_width="377dp"
-                        android:layout_height="62dp"
-                        android:layout_below="@+id/relfragMap"
-                        android:layout_marginTop="-7dp">
-
-                        <ImageView
-                            android:id="@+id/marker1"
-                            android:layout_width="39dp"
-                            android:layout_height="27dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginTop="18dp"
-                            android:gravity="center_vertical"
-                            app:srcCompat="@drawable/ic_clicked_map_marker" />
-
-                        <TextView
-                            android:id="@+id/geolocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginTop="17dp"
-                            android:layout_toEndOf="@+id/marker1"
-                            android:layout_toRightOf="@+id/marker1"
-                            android:gravity="center_vertical"
-                            android:text="Boulevard"
-                            android:textSize="21sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
-                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/eval"

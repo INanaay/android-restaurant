@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -60,17 +61,20 @@ public class MapFragment extends Fragment  {
     private Callback _getRestaurantsCallback;
     private View view;
     private GoogleMap mMap;
-    LocationManager _locationManager;
-    Location _location;
-    ArrayList<Restaurant> _restaurantsList;
-    Marker _lastClicked = null;
-    BitmapDescriptor _defaultMarker;
-    BitmapDescriptor _clickedMarker;
-    ViewSwitcher _viewSwitcher;
-    ImageView _restaurantImage;
-    TextView _resturantName;
-    TextView _restaurantType;
-    ConstraintLayout _popupInfos;
+    private LocationManager _locationManager;
+    private Location _location;
+    private ArrayList<Restaurant> _restaurantsList;
+    private Marker _lastClicked = null;
+    private BitmapDescriptor _defaultMarker;
+    private BitmapDescriptor _clickedMarker;
+    private ViewSwitcher _viewSwitcher;
+    private ImageView _restaurantImage;
+    private TextView _resturantName;
+    private TextView _restaurantType;
+    private ConstraintLayout _popupInfos;
+    private TextView _distance;
+    private RatingBar _rating;
+    private TextView _review_count;
 
     public IRestaurantHandler _handler;
 
@@ -111,6 +115,10 @@ public class MapFragment extends Fragment  {
         _resturantName = view.findViewById(R.id.mapPopupRestaurantName);
         _restaurantType = view.findViewById(R.id.mapPopupRestaurantType);
         _popupInfos = view.findViewById(R.id.mapPopupInfos);
+        _distance = view.findViewById(R.id.mapDistancePopupText);
+        _rating = view.findViewById(R.id.popupRating);
+        _review_count = view.findViewById(R.id.popupReviewCount);
+
 
         _popupInfos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +158,7 @@ public class MapFragment extends Fragment  {
                 ApiManager.getInstance().getCloseRestaurants(_location, _getRestaurantsCallback);
 
                 LatLng camera = new LatLng(_location.getLatitude(), _location.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(camera));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(camera, 15.0f));
             }
         });
         return view;
@@ -163,7 +171,6 @@ public class MapFragment extends Fragment  {
                 requestPermissions(new String[]{
                                 android.Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_CODE_ASK_PERMISSIONS);
-                return ;
             }
         }
         getLocation();
@@ -244,6 +251,14 @@ public class MapFragment extends Fragment  {
                             _resturantName.setText(restaurant.get_name());
                             _restaurantType.setText(restaurant.get_kitchen());
                             Picasso.get().load(restaurant.get_image()).fit().centerCrop().into(_restaurantImage);
+                            String distanceToShow = restaurant.get_distance() + " km";
+                            _distance.setText(distanceToShow);
+                            float rating = Float.parseFloat(restaurant.get_review_average());
+                            _rating.setNumStars(5);
+                            _rating.setRating(rating);
+
+                            String reviewCount = "(" + restaurant.get_review_count() + ")";
+                            _review_count.setText(reviewCount);
                             return false;
                         }
                     });

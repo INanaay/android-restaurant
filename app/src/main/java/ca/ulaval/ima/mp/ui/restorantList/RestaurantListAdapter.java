@@ -32,6 +32,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
     private JSONArray restoArray;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private int idClick;
     private Context mContext;
 
 
@@ -63,6 +64,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         //String animal = mData.get(position);
         try {
             JSONObject resto = this.restoArray.getJSONObject(position);
+            holder.restoId = resto.getString("id");
             holder.thumbnailRestoName.setText(resto.getString("name"));
             holder.thumbnailReviewNumber.setText("( ".concat(resto.getString("review_count")).concat(" )"));
             JSONArray cuisine = resto.getJSONArray("cuisine");
@@ -82,6 +84,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        String restoId;
         TextView thumbnailRestoName;
         TextView thumbnailRestoDistance;
         TextView thumbnailRestoCategory;
@@ -111,7 +114,9 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         @Override
         public void onClick(View view) {
             if (mClickListener != null) {
-                ((MainActivity)mContext).navigateToRestaurantDetails("1", "0", "0");
+                Log.d("passe", restoId);
+
+                ((MainActivity)mContext).navigateToRestaurantDetails(restoId, "0", "0");
             }
         }
     }
