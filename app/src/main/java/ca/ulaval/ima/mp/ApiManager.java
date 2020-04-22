@@ -163,9 +163,9 @@ public class ApiManager extends OkHttpClient{
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/search").newBuilder();
 
-        urlBuilder.addQueryParameter("latitude", String.valueOf(_location.getLatitude()));
-        urlBuilder.addQueryParameter("longitude", String.valueOf(_location.getLongitude()));
-        urlBuilder.addQueryParameter("radius", "30");
+        //urlBuilder.addQueryParameter("latitude", String.valueOf(_location.getLatitude()));
+        //urlBuilder.addQueryParameter("longitude", String.valueOf(_location.getLongitude()));
+        //urlBuilder.addQueryParameter("radius", "30");
 
         String url = urlBuilder.build().toString();
 
