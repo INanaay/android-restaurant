@@ -52,6 +52,7 @@ public class DetailsRestaurant extends AppCompatActivity {
     private ListView listView;
     ReviewAdapter reviewAdapter;
     private TextView nb_review;
+    private Button reviewButton;
 
     private void initView(final JSONObject data) {
             runOnUiThread(new Runnable() {
@@ -96,7 +97,7 @@ public class DetailsRestaurant extends AppCompatActivity {
         setContentView(R.layout.activity_details_restaurant);
         this.getSupportActionBar().hide();
         Intent intent = getIntent();
-        String restaurantId = intent.getStringExtra("id");
+        final String restaurantId = intent.getStringExtra("id");
         String latitude = intent.getStringExtra("latitude");
         String longitude = intent.getStringExtra("longitude");
         listView = (ListView) findViewById(R.id.rv_list2);
@@ -117,7 +118,16 @@ public class DetailsRestaurant extends AppCompatActivity {
         fri = findViewById(R.id.t55);
         sat = findViewById(R.id.t66);
         sun = findViewById(R.id.t77);
+        reviewButton = findViewById(R.id.rv_bottom_btn);
 
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(DetailsRestaurant.this, ReviewActivity.class);
+                intent.putExtra("id", restaurantId);
+                startActivity(intent);
+            }
+        });
         _restaurantDetailsCallback = new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {

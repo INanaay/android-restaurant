@@ -471,8 +471,7 @@
                     layout="@layout/review_list"
                     android:layout_width="match_parent"
                     android:layout_height="692dp"
-                    android:layout_below="@+id/nb_reviewdetail"
-                    android:layout_marginTop="143dp" />
+                    android:layout_below="@+id/nb_reviewdetail" />
 
 
                 <RelativeLayout
@@ -486,6 +485,7 @@
 
                 </RelativeLayout>
 
+                <include layout="@layout/review_bottom_button"/>
 
             </RelativeLayout>
 
