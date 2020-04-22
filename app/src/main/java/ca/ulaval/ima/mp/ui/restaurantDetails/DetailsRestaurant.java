@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.okhttp.Callback;
@@ -27,8 +28,10 @@ import java.io.IOException;
 
 import ca.ulaval.ima.mp.ApiManager;
 import ca.ulaval.ima.mp.R;
+import ca.ulaval.ima.mp.Review;
 import ca.ulaval.ima.mp.ui.restorantList.RestaurantListAdapter;
 import ca.ulaval.ima.mp.ui.reviewList.ReviewActivity;
+import ca.ulaval.ima.mp.ui.reviewList.ReviewAdapter;
 
 public class DetailsRestaurant extends AppCompatActivity {
     private TextView restoName;
@@ -46,6 +49,9 @@ public class DetailsRestaurant extends AppCompatActivity {
     private TextView sun;
     private ImageView restoImg;
     private Callback _restaurantDetailsCallback;
+    private ListView listView;
+    ReviewAdapter reviewAdapter;
+    private TextView nb_review;
 
     private void initView(final JSONObject data) {
             runOnUiThread(new Runnable() {
@@ -68,6 +74,15 @@ public class DetailsRestaurant extends AppCompatActivity {
                         sat.setText(openingHours.getJSONObject(6).getString("opening_hour") + " à " + openingHours.getJSONObject(6).getString("closing_hour"));
                         restoLink.setText(data.getString("website"));
                         restoDistance.setText(data.getString("distance"));
+                        nb_review.setText(data.getString("review_count"));
+                        JSONArray review_data = data.getJSONArray("reviews");
+                        for (int i = 0; i < review_data.length(); i++) {
+                            JSONObject object = review_data.getJSONObject(i);
+                            final String first_name = object.getJSONObject("creator").getString("first_name");
+                            final String last_name = object.getJSONObject("creator").getString("last_name");
+                            Review review = new Review(first_name, last_name, object.getInt("stars"), object.getString("image"), object.getString("comment"), object.getString("date"));
+                            reviewAdapter.add(review);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -84,7 +99,9 @@ public class DetailsRestaurant extends AppCompatActivity {
         String restaurantId = intent.getStringExtra("id");
         String latitude = intent.getStringExtra("latitude");
         String longitude = intent.getStringExtra("longitude");
-
+        listView = (ListView) findViewById(R.id.rv_list2);
+        reviewAdapter = new ReviewAdapter(getApplicationContext(), R.layout.adapter_view_layout);
+        listView.setAdapter(reviewAdapter);
         restoName = findViewById(R.id.txt_title);
         restoType = findViewById(R.id.txt_type);
         restoNumberReview = findViewById(R.id.textcount);
@@ -92,6 +109,7 @@ public class DetailsRestaurant extends AppCompatActivity {
         restoImg = findViewById(R.id.img);
         restoLink = findViewById(R.id.textlink);
         restoDistance = findViewById(R.id.textdistance);
+        nb_review = findViewById(R.id.nb_reviewdetail);
         mon = findViewById(R.id.t11);
         tue = findViewById(R.id.t22);
         wed = findViewById(R.id.t33);
