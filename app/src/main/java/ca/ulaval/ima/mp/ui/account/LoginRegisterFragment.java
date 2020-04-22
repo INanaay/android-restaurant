@@ -31,7 +31,7 @@ import ca.ulaval.ima.mp.R;
 public class LoginRegisterFragment extends Fragment {
 
     public interface ILoginRegisterListener {
-        void login(String email, String password);
+        void login();
     }
 
     private boolean _isLogin = true;
@@ -80,6 +80,8 @@ public class LoginRegisterFragment extends Fragment {
                 }
                 else {
                     showSnackbar("Connecté.");
+                    callback.login();
+                    _loginButton.setVisibility(View.GONE);
                     getTokenFromResponse(response);
                 }
             }

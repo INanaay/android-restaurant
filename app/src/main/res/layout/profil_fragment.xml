@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/profil_container"
+    android:background="?android:windowBackground"
     tools:context=".ui.reviewList.ProfilFragment">
 
     <include layout="@layout/headerbar"
@@ -33,23 +35,28 @@
         android:layout_below="@+id/cp_moncompte"
         android:paddingLeft="20dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cp_firstname"
-        android:text="Eliott"
         android:layout_below="@id/cp_nom"
-        android:paddingTop="5dp"
-        android:paddingLeft="20dp" />
+        android:paddingLeft="20dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cp_firstname"
+            android:text="Eliott"
+            android:paddingTop="5dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cp_lastname"
-        android:text="Legal"
-        android:layout_alignBottom="@id/cp_firstname"
-        android:paddingTop="5dp"
-        android:paddingLeft="58dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cp_lastname"
+            android:text="Legal"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

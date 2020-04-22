@@ -1,5 +1,6 @@
 package ca.ulaval.ima.mp;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.location.Location;
@@ -10,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.okhttp.Response;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 
 import ca.ulaval.ima.mp.ui.account.LoginRegisterFragment;
 import ca.ulaval.ima.mp.ui.restaurantDetails.DetailsRestaurant;
+import ca.ulaval.ima.mp.ui.reviewList.ProfilFragment;
 
 public class MainActivity extends AppCompatActivity implements LoginRegisterFragment.ILoginRegisterListener, IRestaurantHandler {
 
@@ -45,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements LoginRegisterFrag
     }
 
     @Override
-    public void login(String email, String password) {
-        Log.i("LOGIN", email);
-        Log.i("Password", password);
+    public void login() {
+        ProfilFragment fragment = new ProfilFragment();
+        getFragmentManager().beginTransaction().replace(R.id.login_container, fragment, fragment.getTag()).commit();
     }
 
     @Override

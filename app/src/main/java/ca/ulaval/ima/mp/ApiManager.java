@@ -155,17 +155,13 @@ public class ApiManager extends OkHttpClient{
         newCall(request).enqueue(callback);
     }
 
-    public void RemoveToken() {
-        _editor.putString("token", null);
-    }
-
     public void getCloseRestaurants(Location _location, Callback callback) {
 
         HttpUrl.Builder urlBuilder = HttpUrl.parse(_url + "/restaurant/search").newBuilder();
 
-        //urlBuilder.addQueryParameter("latitude", String.valueOf(_location.getLatitude()));
-        //urlBuilder.addQueryParameter("longitude", String.valueOf(_location.getLongitude()));
-        //urlBuilder.addQueryParameter("radius", "30");
+        urlBuilder.addQueryParameter("latitude", String.valueOf(_location.getLatitude()));
+        urlBuilder.addQueryParameter("longitude", String.valueOf(_location.getLongitude()));
+        urlBuilder.addQueryParameter("radius", "30");
 
         String url = urlBuilder.build().toString();
 
