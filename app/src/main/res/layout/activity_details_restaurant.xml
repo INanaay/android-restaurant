@@ -393,13 +393,14 @@
                     android:layout_below="@id/reldays"
                     android:layout_marginStart="20dp"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="15dp"
+
                     android:text="Lieu"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/relMap"
+                    android:orientation="vertical"
                     android:layout_width="402dp"
                     android:layout_height="277dp"
                     android:layout_below="@id/txtlieu"
@@ -411,35 +412,13 @@
                     android:layout_marginBottom="1dp"
                     android:background="@android:drawable/dialog_holo_light_frame">
 
-                    <RelativeLayout
-                        android:id="@+id/txtgeolocation"
-                        android:layout_width="377dp"
-                        android:layout_height="62dp"
-                        android:layout_marginTop="-7dp">
+                    <fragment
+                        android:id="@+id/mapFragmentThumb"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-                        <ImageView
-                            android:id="@+id/marker1"
-                            android:layout_width="39dp"
-                            android:layout_height="27dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginTop="18dp"
-                            android:gravity="center_vertical" />
-
-                        <TextView
-                            android:id="@+id/geolocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginLeft="2dp"
-                            android:layout_marginTop="17dp"
-                            android:layout_toEndOf="@+id/marker1"
-                            android:layout_toRightOf="@+id/marker1"
-                            android:gravity="center_vertical"
-                            android:text="Boulevard"
-                            android:textSize="21sp"
-                            android:textStyle="bold" />
-                    </RelativeLayout>
-                </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/eval"

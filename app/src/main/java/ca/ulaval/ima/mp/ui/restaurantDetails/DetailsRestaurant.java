@@ -2,9 +2,14 @@ package ca.ulaval.ima.mp.ui.restaurantDetails;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,6 +20,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -50,6 +63,7 @@ public class DetailsRestaurant extends AppCompatActivity {
     private ImageView restoImg;
     private Callback _restaurantDetailsCallback;
     private ListView listView;
+    private GoogleMap mMap;
     ReviewAdapter reviewAdapter;
     private TextView nb_review;
     private Button reviewButton;
@@ -98,8 +112,8 @@ public class DetailsRestaurant extends AppCompatActivity {
         this.getSupportActionBar().hide();
         Intent intent = getIntent();
         final String restaurantId = intent.getStringExtra("id");
-        String latitude = intent.getStringExtra("latitude");
-        String longitude = intent.getStringExtra("longitude");
+        final String latitude = intent.getStringExtra("latitude");
+        final String longitude = intent.getStringExtra("longitude");
         listView = (ListView) findViewById(R.id.rv_list2);
         reviewAdapter = new ReviewAdapter(getApplicationContext(), R.layout.adapter_view_layout);
         listView.setAdapter(reviewAdapter);
@@ -155,5 +169,23 @@ public class DetailsRestaurant extends AppCompatActivity {
         } catch (Exception e) {
             Log.d("Error", "Can't mke the Api call");
         }
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragmentThumb);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+                LatLng marker = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                Marker mapMarker = mMap.addMarker(new MarkerOptions().position(marker).icon(bitmapDescriptorFromVector(DetailsRestaurant.this, R.drawable.ic_map_marker)));
+            }
+        });
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
